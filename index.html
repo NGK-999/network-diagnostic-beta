@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Radar de Casadas - Tactical HUD</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <canvas id="matrixCanvas" aria-hidden="true"></canvas>
+
+  <main class="app" id="app">
+    <section class="terminal-screen" id="terminalScreen" aria-live="polite">
+      <div class="terminal-window">
+        <header class="terminal-header">
+          <div class="window-controls" aria-hidden="true">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+          <strong>root@radar-ops:/blacksite/cartorio</strong>
+          <span class="signal">SIGINT ONLINE</span>
+        </header>
+
+        <div class="terminal-body">
+          <div class="hud-meta">
+            <span>PROTOCOLO: BETA FECHADO</span>
+            <span>CRIPTOGRAFIA: AES-4096</span>
+            <span>REDE: STEALTH</span>
+          </div>
+
+          <h1>RADAR DE CASADAS</h1>
+          <p class="mission">Console tático de triangulação civil e varredura conjugal.</p>
+
+          <button class="invasion-button" id="startButton" type="button">
+            [ INICIAR INVASÃO DE SISTEMAS ]
+          </button>
+
+          <div class="terminal-output" id="terminalOutput" role="log"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="map-screen hidden" id="mapScreen" aria-live="polite">
+      <div class="hud-panel">
+        <span>SAT-LINK: ATIVO</span>
+        <span>OSINT: CORRELACIONANDO</span>
+        <span>GPS: TEMPO REAL</span>
+        <span>ALVOS: 03</span>
+      </div>
+
+      <div class="map-frame">
+        <div id="map" aria-label="Mapa militar de rastreamento"></div>
+        <div class="tactical-map-overlay" aria-hidden="true">
+          <div class="targeting-grid"></div>
+          <div class="radar-sweep-line"></div>
+          <div class="radar-center-lock"></div>
+        </div>
+        <div class="map-readout" id="mapReadout">Aguardando telemetria...</div>
+      </div>
+    </section>
+
+    <section class="danger-screen hidden" id="dangerScreen" role="alert" aria-live="assertive">
+      <h2>🚨 PERIGO CRÍTICO! MARIDO ARMADO DETECTADO SE APROXIMANDO. CORRE, TALARICO! 🚨</h2>
+    </section>
+  </main>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
