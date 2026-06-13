@@ -3,47 +3,55 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Rastreamento de Encomendas Express</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <title>Varredura de Proximidade</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <main class="app-shell">
-    <section class="hero" aria-labelledby="pageTitle">
-      <p class="eyebrow">Express Logistics Network</p>
-      <h1 id="pageTitle">Rastreamento de Encomendas Express</h1>
-      <p class="summary">
-        Interface de localizacao tática para identificar a area de entrega e simular o pacote em rota final.
-      </p>
-    </section>
-
-    <section class="terminal-card" aria-label="Terminal de rastreamento">
-      <div class="terminal-topbar">
-        <span class="topbar-dot"></span>
-        <span class="topbar-dot"></span>
-        <span class="topbar-dot"></span>
-        <strong>tracking-node:/express/reverse-gps</strong>
+  <main class="scan-shell">
+    <header class="scan-header">
+      <div>
+        <p class="module-label">API BYPASS // SCRIPT V2.4</p>
+        <h1>🔥 RADAR DE CASADAS (BETA RESTRITO) 🔥</h1>
       </div>
+      <div class="system-status" aria-label="Status do sistema">
+        <span>STATUS</span>
+        <strong id="systemStatus">STANDBY</strong>
+      </div>
+    </header>
 
-      <div class="terminal-body">
-        <button class="locate-button" id="locateButton" type="button">
-          [ LOCALIZAR ENCOMENDA ]
-        </button>
-
-        <div class="terminal-output" id="terminalOutput" role="log" aria-live="polite"></div>
+    <section class="control-panel" aria-label="Controle de varredura">
+      <button id="scanButton" type="button">[ LOCALIZAR ALVOS NUM RAIO DE 5KM ]</button>
+      <div class="readout">
+        <span>GPS</span>
+        <strong id="gpsStatus">AGUARDANDO PERMISSÃO</strong>
+      </div>
+      <div class="readout">
+        <span>POSIÇÃO</span>
+        <strong id="positionStatus">LAT --.----- // LON --.-----</strong>
       </div>
     </section>
 
-    <section class="map-panel hidden" id="mapPanel" aria-label="Mapa tatico da encomenda">
-      <div class="map-status">
-        <span>GPS: ONLINE</span>
-        <span>ROTA: CALCULADA</span>
-        <span>STATUS: APROXIMACAO FINAL</span>
-      </div>
+    <section class="map-panel" aria-label="Mapa tático de proximidade">
       <div id="map"></div>
+      <div class="crosshair" aria-hidden="true">
+        <span class="scan-line horizontal"></span>
+        <span class="scan-line vertical"></span>
+        <span class="scan-ring outer"></span>
+        <span class="scan-ring inner"></span>
+        <span class="scan-core"></span>
+      </div>
+      <div class="sweep-grid" aria-hidden="true"></div>
+    </section>
+
+    <section class="terminal-panel" aria-label="Logs técnicos">
+      <div class="terminal-title">
+        <span>TERMINAL // INTERCEPTAÇÃO DE DADOS</span>
+        <strong id="terminalStatus">IDLE</strong>
+      </div>
+      <div class="terminal-output" id="terminalOutput" role="log" aria-live="polite">
+        <p class="log-line">Sistema em espera. Módulo de proximidade carregado.</p>
+      </div>
     </section>
   </main>
 
