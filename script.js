@@ -8,14 +8,8 @@ const terminalOutput = document.querySelector("#terminalOutput");
 const cartoDarkMatterUrl = "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png";
 const cartoAttribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>';
 const initialCenter = [-15.793889, -47.882778];
-const sireneAudio = new Audio("https://www.myinstants.com/media/sounds/sirene-policia.mp3");
-const scanMessages = [
-  "Conectando a API externa vazada...",
-  "Cruzando status de relacionamento em redes sociais...",
-  "Interceptando grupos de mensagens locais...",
-  "Mapeando sinais via satélite...",
-  "ALERTA: 3 alvos detectados na sua rua."
-];
+const delay = (ms) => new Promise((res) => window.setTimeout(res, ms));
+const sireneAudio = new Audio("nuclear-alarm-siren.mp3");
 
 sireneAudio.loop = true;
 
@@ -32,12 +26,6 @@ function appendLog(message, variant = "") {
   line.textContent = message;
   terminalOutput.appendChild(line);
   terminalOutput.scrollTop = terminalOutput.scrollHeight;
-}
-
-function wait(milliseconds) {
-  return new Promise((resolve) => {
-    window.setTimeout(resolve, milliseconds);
-  });
 }
 
 function requestGeolocation() {
@@ -88,31 +76,49 @@ function bootMap() {
   pinLayer = L.layerGroup().addTo(map);
 }
 
-function buildScanPoints(lat, lon) {
-  return [
-    [lat, lon],
-    [lat + 0.0015, lon - 0.0020],
-    [lat - 0.0018, lon + 0.0015],
-    [lat + 0.0012, lon + 0.0022]
-  ];
-}
-
-function renderProximityPins(lat, lon) {
+async function executeTrackingSequence(baseLat, baseLon) {
   const icon = createPinIcon();
   pinLayer.clearLayers();
 
-  buildScanPoints(lat, lon).forEach((coordinates) => {
-    L.marker(coordinates, {
+  const targets = [
+    [baseLat + 0.0050, baseLon - 0.0040],
+    [baseLat - 0.0045, baseLon + 0.0050],
+    [baseLat - 0.0035, baseLon - 0.0045],
+    [baseLat, baseLon]
+  ];
+  const messages = [
+    "Interceptando dados no setor Norte...",
+    "Analisando tráfego de rede a Leste...",
+    "Varrendo área residencial Sul...",
+    "ALERTA CRÍTICO: 3 " + "C-A-S-A-D-A-S" + " DETECTADAS NA SUA RUA."
+  ];
+
+  for (let index = 0; index < targets.length; index += 1) {
+    const [lat, lon] = targets[index];
+
+    map.panTo([lat, lon], { animate: true, duration: 1.5 });
+    await delay(1500);
+    appendLog(messages[index]);
+
+    L.marker([lat, lon], {
       icon,
       interactive: false,
       keyboard: false
     }).addTo(pinLayer);
-  });
-}
 
-async function writeScanMessage(index) {
-  appendLog(scanMessages[index]);
-  await wait(450);
+    L.circle([lat, lon], {
+      color: "#ff007f",
+      fillColor: "#ff007f",
+      fillOpacity: 0.15,
+      opacity: 0.15,
+      radius: 200
+    }).addTo(pinLayer);
+
+    await delay(2000);
+  }
+
+  await delay(2500);
+  iniciarSusto();
 }
 
 async function startProximityScan() {
@@ -128,9 +134,6 @@ async function startProximityScan() {
   updateText(systemStatus, "SYNC");
   updateText(terminalStatus, "ACTIVE");
 
-  await writeScanMessage(0);
-  await writeScanMessage(1);
-
   try {
     bootMap();
 
@@ -139,22 +142,13 @@ async function startProximityScan() {
     const lon = position.coords.longitude;
     const accuracy = Math.round(position.coords.accuracy);
 
-    await writeScanMessage(2);
-    await writeScanMessage(3);
-    appendLog(scanMessages[4]);
-    window.setTimeout(iniciarSusto, 3000);
     updateText(gpsStatus, `GPS CONFIRMADO // ${accuracy}M`);
     updateText(positionStatus, `LAT ${lat.toFixed(5)} // LON ${lon.toFixed(5)}`);
-
-    map.setView([lat, lon], 15);
-    map.flyTo([lat, lon], 19, {
-      duration: 2.2,
-      easeLinearity: 0.22
-    });
-    renderProximityPins(lat, lon);
-
     updateText(systemStatus, "SCAN ONLINE");
     updateText(terminalStatus, "SCANNING");
+
+    map.setView([lat, lon], 15);
+    await executeTrackingSequence(lat, lon);
   } catch (error) {
     updateText(systemStatus, "FAULT");
     updateText(terminalStatus, "ERROR");

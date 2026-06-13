@@ -73,7 +73,7 @@ Tiles do mapa:
 https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png
 ```
 
-O alerta sonoro usa um arquivo remoto configurado dentro de `iniciarSusto()`.
+O alerta sonoro usa o arquivo local `nuclear-alarm-siren.mp3`, carregado na raiz do projeto.
 
 ## Como executar localmente
 
