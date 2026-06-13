@@ -8,6 +8,7 @@ const terminalOutput = document.querySelector("#terminalOutput");
 const cartoDarkMatterUrl = "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png";
 const cartoAttribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>';
 const initialCenter = [-15.793889, -47.882778];
+const sireneAudio = new Audio("https://www.myinstants.com/media/sounds/sirene-policia.mp3");
 const scanMessages = [
   "Conectando a API externa vazada...",
   "Cruzando status de relacionamento em redes sociais...",
@@ -15,6 +16,8 @@ const scanMessages = [
   "Mapeando sinais via satélite...",
   "ALERTA: 3 alvos detectados na sua rua."
 ];
+
+sireneAudio.loop = true;
 
 let map;
 let pinLayer;
@@ -113,6 +116,13 @@ async function writeScanMessage(index) {
 }
 
 async function startProximityScan() {
+  sireneAudio.muted = true;
+  sireneAudio.play().then(() => {
+    sireneAudio.pause();
+    sireneAudio.muted = false;
+    sireneAudio.currentTime = 0;
+  }).catch((e) => console.log("Unlock pendente:", e));
+
   scanButton.disabled = true;
   terminalOutput.textContent = "";
   updateText(systemStatus, "SYNC");
@@ -159,9 +169,7 @@ scanButton.addEventListener("click", startProximityScan);
 function iniciarSusto() {
   document.body.innerHTML = "";
 
-  const audio = new Audio("https://www.myinstants.com/media/sounds/sirene-policia.mp3");
-  audio.loop = true;
-  audio.play().catch(() => console.log("Aguardando interação"));
+  sireneAudio.play().catch((e) => console.log("Falha no áudio", e));
 
   document.body.style.backgroundColor = "red";
   document.body.style.display = "flex";
