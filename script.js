@@ -177,9 +177,9 @@ function iniciarSusto() {
   style.innerHTML = "@keyframes strobe { 0% { background-color: #8b0000; } 50% { background-color: #000000; } 100% { background-color: #ff0000; } } body { animation: strobe 0.15s infinite; }";
   document.head.appendChild(style);
 
-  const p1 = "🚨 PERIGO! RADAR DE ";
-  const p2 = "CASADAS DETECTADO. ";
-  const p3 = "CORRE, TALARICO! 🚨";
+  const p1 = "🚨 PERIGO! MARIDO ARMADO COM RAIVA. ";
+  const p2 = "FUJA, ";
+  const p3 = "TALARICO! 🚨";
 
   const h1 = document.createElement("h1");
   h1.innerText = p1 + p2 + p3;
