@@ -88,9 +88,9 @@ function bootMap() {
 function buildScanPoints(lat, lon) {
   return [
     [lat, lon],
-    [lat + 0.00018, lon - 0.0002],
-    [lat - 0.00016, lon + 0.00022],
-    [lat + 0.0001, lon + 0.00024]
+    [lat + 0.0015, lon - 0.0020],
+    [lat - 0.0018, lon + 0.0015],
+    [lat + 0.0012, lon + 0.0022]
   ];
 }
 
@@ -137,7 +137,7 @@ async function startProximityScan() {
     updateText(positionStatus, `LAT ${lat.toFixed(5)} // LON ${lon.toFixed(5)}`);
 
     map.setView([lat, lon], 15);
-    map.flyTo([lat, lon], 18, {
+    map.flyTo([lat, lon], 19, {
       duration: 2.2,
       easeLinearity: 0.22
     });
